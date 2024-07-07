@@ -50,12 +50,13 @@ st.markdown("***")
 st.subheader(f"Pick features & interaction limit for HotSpotAnalysis")
 col3, col4 = st.columns(2)
 
-interactable_columns = st_df.select_dtypes(include=["category", "object"]).columns
+interactable_columns = list(st_df.select_dtypes(include=["category", "object"]).columns)
+interactable_columns = [x for x in interactable_columns if x != "overall"]
 
 with col3:
     # 3. Select at least 2 columns
     hsa_features = st.multiselect(
-        "Select at least 2 columns for the hot spot analysis!",
+        "Select at least 2 columns for the hot spot analysis! There can be a delay if all are selected.",
         options=interactable_columns,
         default=None,
     )
@@ -67,8 +68,8 @@ with col4:
     interaction_max = st.select_slider(
         "Select an interaction limit:",
         options=range(
-            3,
-            len(interactable_columns),
+            2,
+            len(interactable_columns) + 1,
         ),
     )
 
