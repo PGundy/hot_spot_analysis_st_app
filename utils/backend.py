@@ -38,6 +38,7 @@ class DatasetManager:
 
     def aggregate_titanic(self, df: pd.DataFrame) -> pd.DataFrame:
         survival_rate = df.agg(
+            survivors=pd.NamedAgg("survived", "sum"),
             survival_rate=pd.NamedAgg("survived", "mean"),
         ).round(4)
         return survival_rate
