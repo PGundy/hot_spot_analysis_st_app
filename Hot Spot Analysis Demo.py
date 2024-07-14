@@ -8,15 +8,19 @@ from hot_spot_analysis.hot_spot_analysis import HotSpotAnalyzer
 
 from utils.backend import dataset_manager
 
-st.set_page_config(
-    page_title="Hot Spot Analysis Demo",
-    page_icon="🔍",
-    layout="wide",
+st.set_page_config(page_title="Hot Spot Analysis Demo", page_icon="🔍", layout="wide")
+
+
+st.header("Hot Spot Analysis Demo")
+st.markdown(
+    """
+    This app has 2 interactive demos of Hot Spot Analysis (HSA). Click around, and see how the output changes by changing parameters! 
+    
+    The code shown in the app is the same code that the app is using to generate the shown dataframes.
+    """
 )
 
-# Create two columns
-# st.markdown("***")
-#!st.subheader(f"Aggregate metrics of {st_dataset_name} dataset")
+st.markdown("***")
 col1, col2 = st.columns(2, vertical_alignment="center")
 with col1:
     available_datasets = dataset_manager.available_datasets
