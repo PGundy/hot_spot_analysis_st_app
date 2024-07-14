@@ -1,5 +1,4 @@
+streamlit
+hot-spot-analysis
 pandas
 seaborn
-streamlit
-streamlit_extras
-hot-spot-analysis
