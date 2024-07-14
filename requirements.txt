@@ -3,3 +3,4 @@ seaborn
 streamlit
 streamlit_extras
 hot-spot-analysis
+inspect

@@ -7,18 +7,12 @@ st.set_page_config(
 
 st.write(
     """
-## About HSA
-Human-Support Analytics (HSA) is a fictional company that specializes in providing data analytics solutions for human-centered data. We help organizations make informed decisions by leveraging data insights and analytics.
+## Hot Spot Analysis (HSA)
 
-Our goal is to empower our clients with the tools and knowledge they need to make data-driven decisions that positively impact their operations and strategy.
+Hot Spot Analysis (HSA) is an analytic reporting framework designed to identify key drivers behind metric movements by analyzing data cuts across multiple features. This tool enhances reporting, uncovers insights, and simplifies understanding of why metrics shift. It automatically processes all viable combinations within the data, offering a structured output for deeper analysis. Future updates aim to improve speed and functionality. HSA is particularly useful for analysts looking to simplify complex data interactions and trends.
 
-### Our Services
-- Data Analysis
-- Data Visualization
-- Machine Learning
-- Predictive Analytics
-- Data Consulting
 
-For more information, visit our website or contact us at info@hsa.com.
+For more details, visit the [Hot Spot Analysis PyPI page](https://pypi.org/project/hot-spot-analysis/) or reach out to [Philip Gundy](PhilipGundy@Gmail.com).
+
 """
 )
