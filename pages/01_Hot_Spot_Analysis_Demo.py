@@ -17,7 +17,7 @@ st.set_page_config(
 # Create two columns
 # st.markdown("***")
 #!st.subheader(f"Aggregate metrics of {st_dataset_name} dataset")
-col1, col2 = st.columns(2)
+col1, col2 = st.columns(2, vertical_alignment="center")
 with col1:
     available_datasets = dataset_manager.available_datasets
     st_dataset_name = str(st.selectbox("Select a dataset", available_datasets, index=0))
@@ -43,16 +43,11 @@ with col2:
 
     st.text("Aggregation function output when grouped by 'overall':")
     st.write(agg_function(st_df.groupby("overall")))  # type: ignore
-    # subcol1, subcol2 = st.columns(2)
-    # with subcol1:
-    #    st.text("")  # for vertical padding
-    #    st.markdown("Example output grouped by 'overall'. A constant column added by HSA.")
-    # with subcol2:
 
 
 st.markdown("***")
 st.subheader(f"Pick features & interaction limit for HotSpotAnalysis")
-col3, col4 = st.columns(2)
+col3, col4 = st.columns(2, vertical_alignment="center")
 
 interactable_columns = list(st_df.select_dtypes(include=["category", "object"]).columns)
 interactable_columns = [x for x in interactable_columns if x != "overall"]
@@ -69,14 +64,32 @@ with col3:
     if len(hsa_features) < 2:
         st.error("Please select at least 2 columns.")
 
-with col4:
     # 4. Select an interaction limit
     interaction_max = len(interactable_columns) + 1
     interaction_selection = st.radio(
         "Select an interaction limit:",
         # value=interaction_max,
+        horizontal=True,
         options=reversed(range(2, interaction_max)),
     )
+
+with col4:
+    st.code(
+        f"""
+        # Setup the HSA class & define parameters
+        HSA = HotSpotAnalyzer(
+            data=df_{st_dataset_name},
+            target_cols={hsa_features},
+            interaction_limit={interaction_selection},
+            objective_function={agg_function_var.__name__}, # callable function 
+            )
+        
+        # Run HSA, then export HSA
+        HSA.run_hsa()
+        HSA.export_hsa_output_df()
+        """
+    )
+
 
 # Save selections to session state & run HSA
 if st.button("Run HSA"):
@@ -217,33 +230,3 @@ if st.session_state.get("hsa_ran", False):
         n_row_minimum=st.session_state["n_row_minimum"],
     )
     st.dataframe(search_results, use_container_width=True)
-
-
-### search_hsa_output(
-###         self,
-###         hsa_df: pd.DataFrame = pd.DataFrame(None),
-###         search_terms: Union[str, list[str]] = None,  # type: ignore
-###         search_across: str = "keys",
-###         search_type: str = "any",
-###         interactions: Union[int, list[int]] = [0],  # default defined below
-###         n_row_minimum: int = 0,
-###     ) -> pd.DataFrame:
-###         """Search across the HSA output dataframe for specific keys(columns) or values.
-###
-###         Parameters:
-###         -----------
-###         hsa_df : pd.DataFrame, optional
-###             The HSA output dataframe to search within. Defaults to an empty DataFrame.
-###         search_terms : Union[str, list[str]], optional
-###             The terms to search for. Defaults to None.
-###         search_across : str, optional
-###             Whether to search across 'keys' or 'values'. Defaults to 'keys'.
-###         search_type : str, optional
-###             The type of search to perform, either 'any' or 'all'. Defaults to 'any'.
-###         interactions : Union[int, list[int]], optional
-###             The interaction levels to consider during the search. Defaults to [0].
-###         n_row_minimum : int, optional
-###             The minimum number of rows to include in the search. Defaults to 0.
-### """
-
-# %%
