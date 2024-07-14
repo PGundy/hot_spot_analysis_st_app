@@ -114,7 +114,7 @@ if st.session_state.get("hsa_ran", False):
     st.markdown("***")
     st.subheader("Search across HSA Data")
 
-    col1, col2, col3, col4, col5 = st.columns(5)
+    col1, col2 = st.columns(2, vertical_alignment="center")
     with col1:
         col1_label = "Search for specific columns or values"
         st.markdown(col1_label)
@@ -126,7 +126,6 @@ if st.session_state.get("hsa_ran", False):
         )
         st.session_state["search_across"] = str(search_across_dict.get(search_across))  # type: ignore
 
-    with col2:
         ## define input for 'search_terms'
         col2_label = "Select search terms"
         st.markdown(col2_label)
@@ -153,7 +152,6 @@ if st.session_state.get("hsa_ran", False):
         )  # type: ignore
         st.session_state["search_terms"] = search_terms
 
-    with col3:
         col3_label = "Search type: Any matches or All must match"
         st.markdown(col3_label)
         ## define input for 'search_type'
@@ -166,45 +164,48 @@ if st.session_state.get("hsa_ran", False):
             help="Should we return results for any matches or require all terms to appear?",
         )
 
-    with col4:
-        st.markdown("col4")
+        col4_label = "Select the number of desired interactions"
+        st.markdown(col4_label)
 
         interactions = list(st.session_state["hsa_data"].interaction_count.unique())
         interactions = [int(x) for x in interactions]
 
         interaction_options = interactions
         st.session_state["interactions"] = st.multiselect(
-            "Select whether to search for a column or a value.",
+            col4_label,
             options=interaction_options,
             default=[0, 1, 2, 3],
+            label_visibility="collapsed",
         )
 
-    with col5:
-        st.markdown("col5")
+        col5_label = "Set a minimum number of rows/observations"
+        st.markdown(col5_label)
         n_rows = st.session_state["hsa_data"].n_rows.unique()
 
         st.session_state["n_row_minimum"] = st.number_input(
-            "Set a minimum number of rows for the search.",
+            col5_label,
             min_value=0,
             max_value=n_rows.max(),
+            label_visibility="collapsed",
+        )
+
+    with col2:
+        st.code(
+            f"""
+            HSA.search_hsa_output(
+                hsa_df={st.session_state["st_dataset_name"]}__hsa_output, # Optional, defaults to data created by `HSA.run_hsa()`
+                search_across="{st.session_state["search_across"]}",
+                search_terms={st.session_state["search_terms"]},
+                search_type="{st.session_state["search_type"]}",
+                interactions={st.session_state["interactions"]},
+                n_row_minimum = {st.session_state["n_row_minimum"]},
+            )   
+                """
         )
 
     st.markdown("***")
-
     HSA = st.session_state["HSA"]
-    st.code(
-        f"""
-        HSA.search_hsa_output(
-            hsa_df={st.session_state["st_dataset_name"]}__hsa_output, # Optional, defaults to data created by `HSA.run_hsa()`
-            search_across="{st.session_state["search_across"]}",
-            search_terms={st.session_state["search_terms"]},
-            search_type="{st.session_state["search_type"]}",
-            interactions={st.session_state["interactions"]},
-            n_row_minimum = {st.session_state["n_row_minimum"]},
-        )
-            
-            """
-    )
+
     search_results = HSA.search_hsa_output(
         hsa_df=st.session_state["hsa_data"],
         search_across=st.session_state["search_across"],
