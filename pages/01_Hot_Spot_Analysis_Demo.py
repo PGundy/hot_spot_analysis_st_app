@@ -118,7 +118,7 @@ if st.session_state.get("hsa_ran", False):
     with col1:
         col1_label = "Search for specific columns or values"
         st.markdown(col1_label)
-        search_across_dict = {"column": "keys", "value": "values"}
+        search_across_dict = {"columns (keys)": "keys", "values": "values"}
         search_across = st.selectbox(
             col1_label,
             label_visibility="collapsed",
@@ -193,13 +193,15 @@ if st.session_state.get("hsa_ran", False):
         st.code(
             f"""
             HSA.search_hsa_output(
-                hsa_df={st.session_state["st_dataset_name"]}__hsa_output, # Optional, defaults to data created by `HSA.run_hsa()`
+                hsa_df={st.session_state["st_dataset_name"]}_hsa_output, # Optional, defaults to full HSA data
                 search_across="{st.session_state["search_across"]}",
                 search_terms={st.session_state["search_terms"]},
                 search_type="{st.session_state["search_type"]}",
                 interactions={st.session_state["interactions"]},
                 n_row_minimum = {st.session_state["n_row_minimum"]},
-            )   
+            )
+            
+            # See output below
                 """
         )
 
