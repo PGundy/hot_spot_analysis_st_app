@@ -13,4 +13,4 @@ st.markdown(
 )
 
 if st.button("Go to Hot Spot Analysis", type="primary"):
-    switch_page("Hot_Spot_Analysis")
+    switch_page("Hot_Spot_Analysis_Demo")

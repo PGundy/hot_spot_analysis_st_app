@@ -14,16 +14,21 @@ class DatasetManager:
             return df_tips
         elif name == "titanic":
             df_titanic = sns.load_dataset("titanic")
+            subset_columns = ["survived", "class", "sex", "deck", "embark_town", "alone"]
+            df_titanic = df_titanic[subset_columns]
             df_titanic["overall"] = "overall"
             return df_titanic
         else:
             raise ValueError(f"Dataset {name} is not available.")
 
-    def dataset_agg_func(self, name: str, df: pd.DataFrame) -> pd.DataFrame:
+    def get_agg_function(self, name: str) -> callable:
+        """
+        Return an python function meant to aggregate a pandas data frame
+        """
         if name == "tips":
-            return self.aggregate_tips(df)
+            return self.aggregate_tips
         elif name == "titanic":
-            return self.aggregate_titanic(df)
+            return self.aggregate_titanic
         else:
             raise ValueError(f"Dataset {name} does not have an aggregation function.")
 
