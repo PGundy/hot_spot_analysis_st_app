@@ -7,9 +7,28 @@ import streamlit as st
 from hot_spot_analysis.hot_spot_analysis import HotSpotAnalyzer
 
 
+def aggregate_tips(df: pd.DataFrame) -> pd.DataFrame:
+    tips_agg = df.agg(
+        avg_tips=pd.NamedAgg("tip", "mean"),
+        avg_tip_perc=pd.NamedAgg("tip_perc", "mean"),
+    ).round(2)
+
+    return tips_agg
+
+
+def aggregate_titanic(df: pd.DataFrame) -> pd.DataFrame:
+    survival_rate = df.agg(
+        survivors=pd.NamedAgg("survived", "sum"),
+        survival_rate=pd.NamedAgg("survived", "mean"),
+    ).round(4)
+    return survival_rate
+
+
 class DatasetManager:
     def __init__(self):
         self.available_datasets = ["tips", "titanic"]
+        self.aggregate_tips = aggregate_tips
+        self.aggregate_titanic = aggregate_titanic
 
     def load_dataset(self, name: str) -> pd.DataFrame:
         if name == "tips":
@@ -36,22 +55,6 @@ class DatasetManager:
             return self.aggregate_titanic
         else:
             raise ValueError(f"Dataset {name} does not have an aggregation function.")
-
-    def aggregate_tips(self, df: pd.DataFrame) -> pd.DataFrame:
-        """fake"""
-        tips_agg = df.agg(
-            avg_tips=pd.NamedAgg("tip", "mean"),
-            avg_tip_perc=pd.NamedAgg("tip_perc", "mean"),
-        ).round(2)
-
-        return tips_agg
-
-    def aggregate_titanic(self, df: pd.DataFrame) -> pd.DataFrame:
-        survival_rate = df.agg(
-            survivors=pd.NamedAgg("survived", "sum"),
-            survival_rate=pd.NamedAgg("survived", "mean"),
-        ).round(4)
-        return survival_rate
 
 
 dataset_manager = DatasetManager()
