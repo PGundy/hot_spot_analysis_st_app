@@ -147,7 +147,7 @@ with col4:
 
 
 # Save selections to session state & run HSA
-if st.button("Run HSA"):  #!!, type="primary"):
+if st.button("Run HSA", type="primary"):
 
     st.session_state["st_dataset_name"] = st_dataset_name
     st.session_state["st_df"] = st_df
